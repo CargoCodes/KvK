@@ -5,8 +5,8 @@ Inter-language transmission meta-language. Useful also for internal software dat
 Example file
 
 <#
-    class "example" ::>
-        (id) -> "1"
+\n\t    class "example" ::>
+\n\t\t        (id) -> "1"
         (available) -> "true"
         (accessible) -> "true"
     class "anotherExamole" ::>
