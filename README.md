@@ -4,21 +4,46 @@ Inter-language transmission meta-language. Useful also for internal software dat
 
 Example file
 
-<#
-\n\t    class "example" ::>
-\n\t\t        (id) -> "1"
-        (available) -> "true"
-        (accessible) -> "true"
-    class "anotherExamole" ::>
-        (id) -> "2"
-        (available) -> "true"
-        (accessible) -> "false"
-#>
+    <#
+        class "example" ::>
+            (id) -> "1"
+            (available) -> "true"
+        class "anotherExamole" ::>
+            (id) -> "2"
+            (accessible) -> "false"
+    #>
 
-Python
 
-kvkFile = kvk.KvK('file.kvk')           At first create a new kvk object
+Python Methods
 
-kvkFile.read()                          Returns a dict, wich represents the content of the file
+At first create a new kvk object
 
-    output: [{"example":{"id":"1", "available":"true", "accessible":"true"}, {"anotherExample":{"id":"2", "available":"true", "accessbile":"false"}}]
+    kvkFile = kvk.KvK(filePath='file.kvk')           
+
+Read kvk file and return the content as an array containing dicts
+
+    kvkFile.read()                          
+
+    # returns [{"example":{"id":"1", "available":"true"}, {"anotherExample":{"id":"2", "accessbile":"false"}}]
+
+Clear file and rewrite it
+
+    kvkFile.write(content=[{"newExample":{"id":"3", "available":"true"}}, {"anotherNewExample":{"id":"4", "available":"false"}}])
+    
+Get an attribute or the content of a class
+
+    kvkFile.get(element="newExample")
+    
+    # returns {"id":"3", "available":"true"}
+    
+    kvkFile.get(element="id", className="anotherNewExample")
+    
+    # returns "4"
+    
+Add an empty class
+
+    kvkFile.addClass(className="newClass")
+    
+Add an attribute to a class
+
+    kvkFile.addAttr(className="newClass", attrName="id", attrContent="5")
