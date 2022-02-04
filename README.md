@@ -80,7 +80,7 @@ Read the kvk file and returns an array list containing maps
     
 Clear the file and rewrite it
 
-    kvk.write(newContent); // newContent must be ArrayList<Map<String, Map<String, String>>>
+    kvk.write(newContent); // newContent must be ArrayList<Map<String, Map<String, String>>> type
     
 Get the content of a class
 
