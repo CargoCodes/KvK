@@ -214,6 +214,42 @@ public class KvK{
         }
     }
 
+    public void editClass(String className, String newClasName){
+        fileReader = new Scanner(file);
+        String fileContent = fileReader.nextLine();
+        while(fileReader.hasNextLine()){
+            fileContent += "\n" + fileReader.nextLine();
+        }
+        int startIndex = (fileContent.indexOf("class \"" + className + "\" ::>"));
+        if(startIndex == -1){
+            throw new Exception("Class not found")
+        }
+        startIndex += 7;
+        int endIndex = startIndex+className.length();
+        fileContent = fileContent[0:startIndex] + newClasName + fileContent[endIndex:fileContent.length()];
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
+            writer.write(fileContent);
+            writer.close();
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void editAttr(String className, String attrName, String newAttrName){
+        fileReader = new Scanner(file);
+        String fileContent = fileReader.nextLine();
+        while(fileReader.hasNextLine()){
+            fileContent += "\n" + fileReader.nextLine();
+        }
+        int startIndex = (fileContent.indexOf("class \"" + className + "\" ::>"));
+        if(startIndex == -1){
+            throw new Exception("Class not found")
+        }
+        startIndex += 7;
+        
+    }
+
     private Map<String, Map<String, String>> __getClass__() throws Exception{
         Map<String, Map<String, String>> tmpRes = new HashMap<String, Map<String, String>>(); // classes
         String className = new String();
