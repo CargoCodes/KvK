@@ -246,8 +246,105 @@ public class KvK{
         if(startIndex == -1){
             throw new Exception("Class not found")
         }
-        startIndex += 7;
-        
+        String preclass = fileContent.substring(0, startIndex);
+        String tmp = fileContent.substring(startIndex+5, fileContent.length());
+        int endClassIndex = tmp.indexOf("class");
+        if (endClassIndex == -1){
+            endClassIndex = tmp.indexOf("#>");
+        }
+        String isolatedClass = fileContent.substring(startIndex, endClassIndex+startIndex+5);
+        String afterClass = tmp.substring(endClassIndex, tmp.length());
+
+        int attrNameIndex = isolatedClass.indexOf("(" + attrName + ")");
+        if (attrNameIndex == -1){
+            throw new Exception(("Attribute not found"));
+        }
+        isolatedClass = isolatedClass.substring(0, attrNameIndex+1) + newAttrName +
+                isolatedClass.substring(attrNameIndex+attrName.length()-1, isolatedClass.length());
+        fileContent = preclass + isolatedClass + afterClass;
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
+            writer.write(fileContent);
+            writer.close();
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void editAttrContent(String className, String attrName, String newAttrContent){
+        fileReader = new Scanner(file);
+        String fileContent = fileReader.nextLine();
+        while(fileReader.hasNextLine()){
+            fileContent += "\n" + fileReader.nextLine();
+        }
+        int startIndex = (fileContent.indexOf("class \"" + className + "\" ::>"));
+        if(startIndex == -1){
+            throw new Exception("Class not found")
+        }
+        String preclass = fileContent.substring(0, startIndex);
+        String tmp = fileContent.substring(startIndex+5, fileContent.length());
+        int endClassIndex = tmp.indexOf("class");
+        if (endClassIndex == -1){
+            endClassIndex = tmp.indexOf("#>");
+        }
+        String isolatedClass = fileContent.substring(startIndex, endClassIndex+startIndex+5);
+        String afterClass = tmp.substring(endClassIndex, tmp.length());
+
+        int attrNameIndex = isolatedClass.indexOf("(" + attrName + ")");
+        if (attrNameIndex == -1){
+            throw new Exception(("Attribute not found"));
+        }
+        int attrIndex = attrNameIndex;
+        while(!(isolatedClass.substring(attrIndex)).equals("1")){
+            attrIndex += 1;
+        }
+        int endAttrIndex = attrIndex+1;
+        while(!(isolatedClass.substring(endAttrIndex)).equals("\"")){
+            endAttrIndex += 1;
+        }
+        isolatedClass = isolatedClass.substring(0, attrIndex) + newAttrContent + isolatedClass.substring(endAttrIndex, isolatedClass.length());
+        fileContent = preclass + isolatedClass + afterClass;
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
+            writer.write(fileContent);
+            writer.close();
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void removeClass(String className){
+        fileReader = new Scanner(file);
+        String fileContent = fileReader.nextLine();
+        while(fileReader.hasNextLine()){
+            fileContent += "\n" + fileReader.nextLine();
+        }
+        int classIndex = fileContent.indexOf("class \"" + className + "\" ::>");
+        if(classIndex == -1){
+            throw new Exception("Class not found.");
+        }
+        String preclass = fileContent.substring(0, classIndex-4);
+        String tmp = fileContent.substring(classIndex+5, fileContent.length());
+        int endClassIndex = tmp.indexOf("class");
+        String afterClass;
+        if(endClassIndex == -1){
+            endClassIndex = tmp.indexOf("#>");
+            afterClass = "#>";
+        } else {
+            afterClass = tmp.substring(endClassIndex, tmp.length());
+        }
+        fileContent = preclass + afterClass;
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
+            writer.write(fileContent);
+            writer.close();
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void removeAttr(String claassName, String attrName){
+
     }
 
     private Map<String, Map<String, String>> __getClass__() throws Exception{
