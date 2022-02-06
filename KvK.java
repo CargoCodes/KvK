@@ -1,8 +1,6 @@
 package com.company;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.net.Proxy;
 import java.util.*;
 
 public class KvK{
@@ -214,7 +212,7 @@ public class KvK{
         }
     }
 
-    public void editClass(String className, String newClasName){
+    public void editClass(String className, String newClasName) throws Exception{
         fileReader = new Scanner(file);
         String fileContent = fileReader.nextLine();
         while(fileReader.hasNextLine()){
@@ -222,11 +220,11 @@ public class KvK{
         }
         int startIndex = (fileContent.indexOf("class \"" + className + "\" ::>"));
         if(startIndex == -1){
-            throw new Exception("Class not found")
+            throw new Exception("Class not found");
         }
         startIndex += 7;
         int endIndex = startIndex+className.length();
-        fileContent = fileContent[0:startIndex] + newClasName + fileContent[endIndex:fileContent.length()];
+        fileContent = fileContent.substring(0,startIndex) + newClasName + fileContent.substring(endIndex,fileContent.length());
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
             writer.write(fileContent);
@@ -236,7 +234,7 @@ public class KvK{
         }
     }
 
-    public void editAttr(String className, String attrName, String newAttrName){
+    public void editAttr(String className, String attrName, String newAttrName) throws Exception{
         fileReader = new Scanner(file);
         String fileContent = fileReader.nextLine();
         while(fileReader.hasNextLine()){
@@ -244,7 +242,7 @@ public class KvK{
         }
         int startIndex = (fileContent.indexOf("class \"" + className + "\" ::>"));
         if(startIndex == -1){
-            throw new Exception("Class not found")
+            throw new Exception("Class not found");
         }
         String preclass = fileContent.substring(0, startIndex);
         String tmp = fileContent.substring(startIndex+5, fileContent.length());
@@ -260,7 +258,7 @@ public class KvK{
             throw new Exception(("Attribute not found"));
         }
         isolatedClass = isolatedClass.substring(0, attrNameIndex+1) + newAttrName +
-                isolatedClass.substring(attrNameIndex+attrName.length()-1, isolatedClass.length());
+                isolatedClass.substring(attrNameIndex+attrName.length()+1, isolatedClass.length());
         fileContent = preclass + isolatedClass + afterClass;
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
@@ -271,7 +269,7 @@ public class KvK{
         }
     }
 
-    public void editAttrContent(String className, String attrName, String newAttrContent){
+    public void editAttrContent(String className, String attrName, String newAttrContent) throws Exception{
         fileReader = new Scanner(file);
         String fileContent = fileReader.nextLine();
         while(fileReader.hasNextLine()){
@@ -279,7 +277,7 @@ public class KvK{
         }
         int startIndex = (fileContent.indexOf("class \"" + className + "\" ::>"));
         if(startIndex == -1){
-            throw new Exception("Class not found")
+            throw new Exception("Class not found");
         }
         String preclass = fileContent.substring(0, startIndex);
         String tmp = fileContent.substring(startIndex+5, fileContent.length());
@@ -295,14 +293,14 @@ public class KvK{
             throw new Exception(("Attribute not found"));
         }
         int attrIndex = attrNameIndex;
-        while(!(isolatedClass.substring(attrIndex)).equals("1")){
+        while(!(isolatedClass.substring(attrIndex, attrIndex+1)).equals("\"")){
             attrIndex += 1;
         }
         int endAttrIndex = attrIndex+1;
-        while(!(isolatedClass.substring(endAttrIndex)).equals("\"")){
+        while(!(isolatedClass.substring(endAttrIndex, endAttrIndex+1)).equals("\"")){
             endAttrIndex += 1;
         }
-        isolatedClass = isolatedClass.substring(0, attrIndex) + newAttrContent + isolatedClass.substring(endAttrIndex, isolatedClass.length());
+        isolatedClass = isolatedClass.substring(0, attrIndex+1) + newAttrContent + isolatedClass.substring(endAttrIndex, isolatedClass.length());
         fileContent = preclass + isolatedClass + afterClass;
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
@@ -313,7 +311,7 @@ public class KvK{
         }
     }
 
-    public void removeClass(String className){
+    public void removeClass(String className) throws Exception{
         fileReader = new Scanner(file);
         String fileContent = fileReader.nextLine();
         while(fileReader.hasNextLine()){
@@ -343,8 +341,46 @@ public class KvK{
         }
     }
 
-    public void removeAttr(String claassName, String attrName){
+    public void removeAttr(String className, String attrName) throws Exception{
+        fileReader = new Scanner(file);
+        String fileContent = fileReader.nextLine();
+        while(fileReader.hasNextLine()){
+            fileContent += "\n" + fileReader.nextLine();
+        }
+        int startIndex = (fileContent.indexOf("class \"" + className + "\" ::>"));
+        if(startIndex == -1){
+            throw new Exception("Class not found");
+        }
+        String preclass = fileContent.substring(0, startIndex);
+        String tmp = fileContent.substring(startIndex+5, fileContent.length());
+        int endClassIndex = tmp.indexOf("class");
+        if (endClassIndex == -1){
+            endClassIndex = tmp.indexOf("#>");
+        }
+        String isolatedClass = fileContent.substring(startIndex, endClassIndex+startIndex+1);
+        String afterClass = tmp.substring(endClassIndex, tmp.length());
 
+        int attrNameIndex = isolatedClass.indexOf("(" + attrName + ")");
+        if (attrNameIndex == -1){
+            throw new Exception(("Attribute not found"));
+        }
+        int attrIndex = attrNameIndex;
+        while(!(isolatedClass.substring(attrIndex, attrIndex+1)).equals("\"")){
+            attrIndex += 1;
+        }
+        int endAttrIndex = attrIndex+1;
+        while(!(isolatedClass.substring(endAttrIndex, endAttrIndex+1)).equals("\"")){
+            endAttrIndex += 1;
+        }
+        isolatedClass = isolatedClass.substring(0, attrNameIndex-8) + isolatedClass.substring(endAttrIndex+1, isolatedClass.length()) + "    ";
+        fileContent = preclass + isolatedClass + afterClass;
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
+            writer.write(fileContent);
+            writer.close();
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
     }
 
     private Map<String, Map<String, String>> __getClass__() throws Exception{
