@@ -13,6 +13,9 @@ public class KvK{
 
     KvK(String filePath){
         filepath = filePath;
+        if(filepath.subString((filepath.length())-4, filepath.length()) != ".kvk"){
+            throw new Exception("File extention must be \".kvk\"");
+        }
         file = new File(filePath);
     }
 
