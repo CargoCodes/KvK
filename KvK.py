@@ -1,14 +1,20 @@
 class Kvk:
     def __init__(self, filePath):
         self.filePath = filePath
-        try:
-            self.file = open(self.filePath, 'r')
-        except:
-            self.content = '<#\n#>'
-        else:
-            self.content = self.file.read()
+        self.__startingContent__()
         self.pos = 0
     #private methods
+    def __startingContent__(self):
+        if not filePath[len(filePath)-4, len(filePath)] == '.kvk':
+            raise Exception('File extension must be \".kvk\"')
+        else:
+            try:
+                self.file = open(self.filePath, 'r')
+            except:
+                self.content = '<#\n#>'
+            else:
+                self.content = self.file.read()
+                
     def __getClass__(self):
         tmpDict = {}
         self.pos += 5
