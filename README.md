@@ -4,7 +4,7 @@ Inter-language transmission meta-language. Useful also for internal software dat
 
 Interpreter available for:
 - [Python](https://github.com/CargoCodes/KvK#python-methods)
-- [C++](https://github.com/CargoCodes/KvK#c++-methods)
+- [C++](https://github.com/CargoCodes/KvK#c-methods)
 - [Java](https://github.com/CargoCodes/KvK#java-methods)
 
 Example file
