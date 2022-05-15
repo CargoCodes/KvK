@@ -4,12 +4,12 @@ import java.io.*;
 import java.util.*;
 
 public class KvK{
-    Scanner fileReader;
-    String filepath;
-    File file;
+    private Scanner fileReader;
+    private String filepath;
+    private File file;
     private int i;
-    String[] currentLine;
-    String lineString;
+    private String[] currentLine;
+    private String lineString;
 
     KvK(String filePath){
         filepath = filePath;
