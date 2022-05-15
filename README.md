@@ -3,9 +3,9 @@
 Inter-language transmission meta-language. Useful also for internal software databases and internal data saving.
 
 Interpreter available for:
-- Python
-- C++
-- Java
+- [Python](https://github.com/CargoCodes/KvK#python-methods)
+- [C++](https://github.com/CargoCodes/KvK#c++-methods)
+- [Java](https://github.com/CargoCodes/KvK#java-methods)
 
 Example file
 
